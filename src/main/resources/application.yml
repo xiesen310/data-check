@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://49.233.88.149:3306/data_check?useSSL=false&serverTimezone=GMT%2B8
+    username: root
+    password: Mysql@123
+logging:
+  level:
+    root: warn
+    com.check.datacheck.dao: trace
+  pattern: '%p%m%n'
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
