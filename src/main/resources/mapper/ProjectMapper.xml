@@ -1,0 +1,18 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.check.datacheck.dao.ProjectMapper">
+    <sql id="commonSql">
+		id,
+        name,
+        describe_message,
+        create_time,
+        update_time
+    </sql>
+
+    <select id="selectProjectByName" resultType="com.check.datacheck.model.Project">
+        select <include refid="commonSql"></include> from project where name = #{name}
+    </select>
+
+
+</mapper>

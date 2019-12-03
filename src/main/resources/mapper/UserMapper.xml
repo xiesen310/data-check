@@ -2,8 +2,22 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.check.datacheck.dao.UserMapper">
+    <sql id="commonSql">
+		id,
+        username,
+        password,
+        age,
+        email,
+        create_time,
+        update_time
+    </sql>
+
     <select id="selectAll" resultType="com.check.datacheck.model.User">
-        select * from user ${ew.customSqlSegment}
+        select <include refid="commonSql"></include> from user ${ew.customSqlSegment}
+    </select>
+
+    <select id="selectUserByName" resultType="com.check.datacheck.model.User">
+        select <include refid="commonSql"></include> from user where username = #{username}
     </select>
 
 </mapper>

@@ -17,8 +17,16 @@ import java.util.List;
  */
 public interface UserMapper extends BaseMapper<User> {
     /**
-     * @param wrapper  Wrapper<User>
+     * @param wrapper Wrapper<User>
      * @return List<User>
      */
     List<User> selectAll(@Param(Constants.WRAPPER) Wrapper<User> wrapper);
+
+    /**
+     * 根据用户名查询
+     *
+     * @param username 用户名
+     * @return User 对象
+     */
+    User selectUserByName(@Param("username") String username);
 }

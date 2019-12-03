@@ -1,5 +1,6 @@
 package com.check.datacheck.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,6 +26,6 @@ public class RespDto<T> {
     /**
      * 此项当有值时才会返回
      */
-//    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private T data;
 }
