@@ -14,3 +14,6 @@ logging:
   pattern: '%p%m%n'
 mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
+  type-enums-package: com.check.datacheck.model.enums
+  configuration:
+    default-enum-type-handler: org.apache.ibatis.type.EnumTypeHandler
