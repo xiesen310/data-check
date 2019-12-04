@@ -11,4 +11,10 @@ import com.check.datacheck.model.DataSet;
  * @Date 2019/12/3 15:22 星期二
  */
 public interface DataSetMapper extends BaseMapper<DataSet> {
+    /**
+     * 根据数据集名称查询
+     * @param name 数据集名称
+     * @return
+     */
+    DataSet selectByName(String name);
 }

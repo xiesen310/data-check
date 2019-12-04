@@ -34,6 +34,11 @@ public class DataSet {
     private DatasetTypeEnum type;
 
     /**
+     * 项目 ID
+     */
+    private Long projectId;
+
+    /**
      * 约束条件
      */
     private String schemaJson;

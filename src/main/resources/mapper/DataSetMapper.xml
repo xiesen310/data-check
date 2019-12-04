@@ -1,0 +1,23 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.check.datacheck.dao.DataSetMapper">
+    <sql id="commonSql">
+		id,
+        name,
+        type,
+        project_id,
+        schema_json,
+        partition_num,
+        lifecycle,
+        create_time,
+        update_time,
+        remark
+    </sql>
+
+    <select id="selectByName" resultType="com.check.datacheck.model.DataSet">
+        select <include refid="commonSql"></include> from dataset where name = #{name}
+    </select>
+
+
+</mapper>

@@ -35,4 +35,10 @@ public class ProjectController {
     public RespDto delete(@RequestParam(value = "id", required = true) Long id) {
         return projectService.deleteById(id);
     }
+
+    @RequestMapping(value = "/project/view", method = RequestMethod.GET)
+    @ResponseBody
+    public RespDto view(@RequestParam(value = "id", required = true) Long id) {
+        return projectService.checkButton(id);
+    }
 }

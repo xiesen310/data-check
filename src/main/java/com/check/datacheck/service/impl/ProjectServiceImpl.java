@@ -5,11 +5,15 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.check.datacheck.constants.ProjectConstant;
+import com.check.datacheck.dao.DataSetMapper;
 import com.check.datacheck.dao.ProjectMapper;
+import com.check.datacheck.model.DataSet;
 import com.check.datacheck.model.Project;
 import com.check.datacheck.model.dto.RespDto;
+import com.check.datacheck.model.vo.ProjectVO;
 import com.check.datacheck.service.ProjectService;
 import com.check.datacheck.utils.RespHelper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +30,9 @@ import java.util.List;
 public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> implements ProjectService {
     @Autowired
     private ProjectMapper projectMapper;
+
+    @Autowired
+    private DataSetMapper dataSetMapper;
 
     @Override
     public RespDto createProject(Project project) {
@@ -58,13 +65,11 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
 
     @Override
     public RespDto selectByName(String name) {
+        String columnName = "name";
         QueryWrapper<Project> queryWrapper = new QueryWrapper<>();
         if (StrUtil.isNotBlank(name)) {
-            Project project = new Project();
-            project.setName(name);
-            queryWrapper.setEntity(project);
+            queryWrapper.like(columnName, name);
         }
-
         List<Project> projectList = projectMapper.selectList(queryWrapper);
         return RespHelper.ok(projectList);
     }
@@ -76,5 +81,26 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectMapper, Project> impl
             return RespHelper.ok(rows, "删除 id 为 " + id + " 项目成功");
         }
         return RespHelper.fail(ProjectConstant.PROJECT_DELETE_FAIL, "项目删除失败");
+    }
+
+    @Override
+    public RespDto checkButton(Long id) {
+        String columnProjectId = "project_id";
+        if (ObjectUtil.isNotNull(id)) {
+            Project project = projectMapper.selectById(id);
+            ProjectVO projectVO = new ProjectVO();
+            if (ObjectUtil.isNotNull(project)) {
+                BeanUtils.copyProperties(project, projectVO);
+                QueryWrapper<DataSet> queryWrapper = new QueryWrapper<>();
+                queryWrapper.eq(columnProjectId, id);
+                List<DataSet> dataSetList = dataSetMapper.selectList(queryWrapper);
+                projectVO.setDataSetList(dataSetList);
+            } else {
+                return RespHelper.fail(ProjectConstant.PROJECT_ID_NOT_EXIST, "项目 ID 不存在");
+            }
+            return RespHelper.ok(projectVO);
+        } else {
+            return RespHelper.fail(ProjectConstant.PROJECT_ID_IS_NULL, "项目 ID 不能为空");
+        }
     }
 }

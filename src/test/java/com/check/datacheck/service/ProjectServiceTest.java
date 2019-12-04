@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
-
 /**
  * @author 谢森
  * @Description 项目服务测试
@@ -24,17 +22,17 @@ public class ProjectServiceTest {
     private ProjectService projectService;
 
     @Test
-    public void createProject(){
+    public void createProject() {
         Project project = new Project();
         project.setName("test1");
         project.setDescribeMessage("创建测试项目1");
         RespDto resp = projectService.createProject(project);
 
-        System.out.println("data： "+resp.getData() + " ,code： " + resp.getCode() + " ,message: " + resp.getMessage());
+        System.out.println("data： " + resp.getData() + " ,code： " + resp.getCode() + " ,message: " + resp.getMessage());
     }
 
     @Test
-    public void checkNameIsExist(){
+    public void checkNameIsExist() {
         Boolean nameIsExist = projectService.checkNameIsExist("test");
         System.out.println(nameIsExist);
     }
@@ -47,8 +45,14 @@ public class ProjectServiceTest {
     }
 
     @Test
-    public void deleteById(){
+    public void deleteById() {
         RespDto resp = projectService.deleteById(1201745119720550402L);
-        System.out.println("data： "+resp.getData() + " ,code： " + resp.getCode() + " ,message: " + resp.getMessage());
+        System.out.println("data： " + resp.getData() + " ,code： " + resp.getCode() + " ,message: " + resp.getMessage());
+    }
+
+    @Test
+    public void checkButton() {
+        RespDto resp = projectService.checkButton(1201706102832623618L);
+        System.out.println("data： " + resp.getData() + " ,code： " + resp.getCode() + " ,message: " + resp.getMessage());
     }
 }
