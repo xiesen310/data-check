@@ -3,6 +3,9 @@ package com.check.datacheck.controller;
 import com.check.datacheck.model.DataSet;
 import com.check.datacheck.model.dto.RespDto;
 import com.check.datacheck.service.DataSetService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,14 +16,21 @@ import org.springframework.web.bind.annotation.*;
  * @Email xiesen@zork.com.cn
  * @Date 2019/12/4 11:00 星期三
  */
+@Api(value = "数据集控制器", protocols = "http")
 @RestController
 public class DataSetController {
     @Autowired
     private DataSetService dataSetService;
 
+    @ApiOperation(
+            value = "创建数据集",
+            produces = "application/json, application/xml",
+            consumes = "application/json, application/xml",
+            response = RespDto.class
+    )
     @RequestMapping(value = "/dataset/create", method = RequestMethod.POST)
     @ResponseBody
-    public RespDto createProject(@RequestBody DataSet dataSet) {
+    public RespDto createProject(@ApiParam(value = "数据集对象", required = true) @RequestBody DataSet dataSet) {
         return dataSetService.createDataSet(dataSet);
     }
 
