@@ -32,8 +32,9 @@ public class UserController {
     )
     @RequestMapping(value = "/user/login", method = RequestMethod.GET)
     @ResponseBody
-    public RespDto login(@ApiParam(value = "用户名", required = true) String username) {
-        RespDto respDto = userService.login(username);
+    public RespDto login(@ApiParam(value = "用户名", required = true) String username,
+                         @ApiParam(value = "密码", required = true) String password) {
+        RespDto respDto = userService.login(username, password);
         return respDto;
     }
 }

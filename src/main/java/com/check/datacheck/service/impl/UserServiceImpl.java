@@ -28,15 +28,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private UserMapper userMapper;
 
     @Override
-    public RespDto login(String username) {
-        if(StrUtil.hasEmpty(username)){
-            return RespHelper.fail(UserConstant.USERNAME_IS_NULL,"用户名不能为空");
-        }else {
+    public RespDto login(String username, String password) {
+        if (StrUtil.hasEmpty(username)) {
+            return RespHelper.fail(UserConstant.USERNAME_IS_NULL, "用户名不能为空");
+        } else {
             User user = userMapper.selectUserByName(username);
-            if(!ObjectUtil.hasEmpty(user)){
+            if (password.equals(user.getPassword())) {
                 return RespHelper.ok(user);
-            }else {
-                return RespHelper.fail(UserConstant.USERNAME_NOT_EXIST,"用户名不存在");
+            } else {
+                return RespHelper.fail(UserConstant.USERNAME_NOT_EXIST, "用户名不存在");
             }
         }
     }
