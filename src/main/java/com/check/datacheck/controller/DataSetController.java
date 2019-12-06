@@ -34,21 +34,40 @@ public class DataSetController {
         return dataSetService.createDataSet(dataSet);
     }
 
+    @ApiOperation(
+            value = "查询数据集",
+            produces = "application/json, application/xml",
+            consumes = "application/json, application/xml",
+            response = RespDto.class
+    )
     @RequestMapping(value = "/dataset/search", method = RequestMethod.GET)
     @ResponseBody
-    public RespDto search(String name) {
+    public RespDto search(@ApiParam(value = "数据集名称", required = false) String name) {
         return dataSetService.selectByName(name);
     }
 
+    @ApiOperation(
+            value = "删除数据集",
+            produces = "application/json, application/xml",
+            consumes = "application/json, application/xml",
+            response = RespDto.class
+    )
     @RequestMapping(value = "/dataset/delete", method = RequestMethod.GET)
     @ResponseBody
-    public RespDto delete(@RequestParam(value = "id", required = true) Long id) {
+    public RespDto delete(@ApiParam(value = "数据集 ID", required = true) @RequestParam(value = "id", required = true) Long id) {
         return dataSetService.deleteById(id);
     }
 
+    @ApiOperation(
+            value = "查看数据集",
+            produces = "application/json, application/xml",
+            consumes = "application/json, application/xml",
+            response = RespDto.class
+    )
     @RequestMapping(value = "/dataset/view", method = RequestMethod.GET)
     @ResponseBody
-    public RespDto view(@RequestParam(value = "id", required = true) Long id) {
+    public RespDto view(@ApiParam(value = "数据集 ID", required = true)
+                        @RequestParam(value = "id", required = true) Long id) {
         return dataSetService.selectById(id);
     }
 }

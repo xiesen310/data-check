@@ -52,3 +52,13 @@ mybatis-plus:
   type-enums-package: com.check.datacheck.model.enums
   configuration:
     default-enum-type-handler: org.apache.ibatis.type.EnumTypeHandler
+
+
+######################
+# kafka 配置
+######################
+check:
+  kafka:
+    error-topic: error
+    servers: localhost:9092
+    batchSize: 1
