@@ -22,8 +22,8 @@ public class UserServiceTest {
     private UserService userService;
 
     @Test
-    public void login(){
-        RespDto resp = userService.login("");
-        System.out.println("data： "+resp.getData() + " ,code： " + resp.getCode() + " ,message: " + resp.getMessage());
+    public void login() {
+        RespDto resp = userService.login("", "");
+        System.out.println("data： " + resp.getData() + " ,code： " + resp.getCode() + " ,message: " + resp.getMessage());
     }
 }
