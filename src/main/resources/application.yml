@@ -61,6 +61,12 @@ mybatis-plus:
     db-config:
       id-type: auto
 
+######################
+# page helper 配置
+######################
+pagehelper:
+  helperDialect=mysql: mysql
+  reasonable: true
 
 ######################
 # kafka 配置

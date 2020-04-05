@@ -3,6 +3,7 @@ package com.check.datacheck.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.check.datacheck.model.User;
 import com.check.datacheck.model.dto.RespDto;
+import com.github.pagehelper.PageInfo;
 
 /**
  * @author 谢森
@@ -20,4 +21,14 @@ public interface UserService extends IService<User> {
      * @return
      */
     RespDto login(String username, String password);
+
+    /**
+     * 分页查询
+     *
+     * @param pageNum  当前是第几页
+     * @param pageSize 当前页一共几条记录
+     * @return {@link PageInfo}
+     */
+    PageInfo<User> searchByPage(int pageNum, int pageSize);
+
 }
