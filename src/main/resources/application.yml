@@ -1,10 +1,15 @@
+server:
+  port: 8090
+
 ######################
 # 数据源配置
 ######################
 spring:
+  application:
+    name: data-check
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://49.233.88.149:3306/data_check?useSSL=false&serverTimezone=GMT%2B8&characterEncoding=utf-8
+    url: jdbc:mysql://s104:3306/data_check?useSSL=false&serverTimezone=GMT%2B8&characterEncoding=utf-8
     username: root
     password: Mysql@123
     type: com.alibaba.druid.pool.DruidDataSource
