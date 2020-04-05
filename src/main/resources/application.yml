@@ -57,6 +57,9 @@ mybatis-plus:
   type-enums-package: com.check.datacheck.model.enums
   configuration:
     default-enum-type-handler: org.apache.ibatis.type.EnumTypeHandler
+  global-config:
+    db-config:
+      id-type: auto
 
 
 ######################
