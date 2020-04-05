@@ -74,5 +74,6 @@ pagehelper:
 check:
   kafka:
     error-topic: error
-    servers: localhost:9092
+    servers: s103:9092
     batchSize: 1
+    zkUrl: s103:2181/kafka111

@@ -1,12 +1,22 @@
 package com.check.datacheck.kafka;
 
+import com.check.datacheck.init.AppProperties;
+import kafka.admin.AdminUtils;
+import kafka.admin.RackAwareMode;
+import kafka.admin.TopicCommand;
+import kafka.server.ConfigType;
+import kafka.utils.ZkUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.CommonClientConfigs;
-import org.apache.kafka.clients.admin.AdminClient;
-import org.apache.kafka.clients.admin.ListTopicsResult;
-import org.apache.kafka.clients.admin.NewTopic;
+import org.apache.kafka.clients.admin.*;
+import org.apache.kafka.common.security.JaasUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import scala.collection.JavaConversions;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -16,8 +26,14 @@ import java.util.Properties;
  * @Email xiesen@zork.com.cn
  * @Date 2019/12/6 16:14 星期五
  */
+@Component
+@Slf4j
 public class KafkaManagerUtil {
-    private static final String brokerUrl = "localhost:9092";
+    private static final String brokerUrl = "s103:9092";
+    private static String zkStr = "s103:2181/kafka111";
+
+    @Autowired
+    private AppProperties appProperties;
 
     /**
      * 获取 kafka Admin
@@ -38,19 +54,38 @@ public class KafkaManagerUtil {
      * @param partition   分区数量
      * @param replication 备份数
      */
-    public static void createKafkaTopic(String topicName, int partition, int replication) {
-        NewTopic newTopic = new NewTopic(topicName, partition, (short) replication);
-        Collection<NewTopic> newTopicList = new ArrayList<>();
-        newTopicList.add(newTopic);
-        getAdminClient().createTopics(newTopicList);
+    public String createKafkaTopic(String topicName, int partition, int replication) {
+        try {
+            System.out.println(appProperties.getZookeeperUrl());
+            ZkUtils zkUtils = ZkUtils.
+                    apply(appProperties.getZookeeperUrl().toString(), 30000, 30000, JaasUtils.isZkSecurityEnabled());
+
+            boolean b = AdminUtils.topicExists(zkUtils, topicName);
+            if (!b) {
+                AdminUtils.createTopic(zkUtils, topicName, partition,
+                        replication, new Properties(), new RackAwareMode.Enforced$());
+                boolean flag = AdminUtils.topicExists(zkUtils, topicName);
+                zkUtils.close();
+                return flag ? "success" : "fail";
+            } else {
+                log.error(" [{}]已存在", topicName);
+                return "fail";
+            }
+        } catch (Exception e) {
+            log.error("创建 [" + topicName + "] 失败");
+            return "fail";
+        }
+
     }
 
     /**
      * 列举所有 topic
      */
-    public static void listTopics() {
-        ListTopicsResult listTopicsResult = getAdminClient().listTopics();
-        System.out.println(listTopicsResult);
+    public static List<String> listTopics() {
+        ZkUtils zkUtils = ZkUtils.apply(zkStr, 30000, 30000, JaasUtils.isZkSecurityEnabled());
+        List<String> topics = JavaConversions.seqAsJavaList(zkUtils.getAllTopics());
+        topics.forEach(System.out::println);
+        return topics;
     }
 
     /**
@@ -59,21 +94,35 @@ public class KafkaManagerUtil {
      * @param topicName 主题名称
      */
     public static void deleteTopic(String topicName) {
-        Collection<String> topics = new ArrayList<>();
-        topics.add(topicName);
-        getAdminClient().deleteTopics(topics);
+        ZkUtils zkUtils = ZkUtils.
+                apply(zkStr, 30000, 30000, JaasUtils.isZkSecurityEnabled());
+
+        AdminUtils.deleteTopic(zkUtils, topicName);
+
+        zkUtils.close();
 
     }
 
     /**
-     * 获取 topic 的描述信息
+     * 判断 topic 是否存在
      *
-     * @param topicName 主题名称
+     * @param topicName topic
+     * @return
      */
-    public static void describeTopics(String topicName) {
-        Collection<String> topics = new ArrayList<>();
-        topics.add(topicName);
-        getAdminClient().describeTopics(topics);
+    public static boolean topicExists(String topicName) {
+        ZkUtils zkUtils = null;
+        try {
+            zkUtils = ZkUtils.
+                    apply(zkStr, 30000, 30000, JaasUtils.isZkSecurityEnabled());
+
+            boolean exists = AdminUtils.topicExists(zkUtils, topicName);
+            return exists;
+        } finally {
+            if (null != zkUtils) {
+                zkUtils.close();
+            }
+        }
     }
+
 
 }

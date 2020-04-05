@@ -3,6 +3,7 @@ package com.check.datacheck.init;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 /**
  * @author 谢森
@@ -11,8 +12,9 @@ import org.springframework.context.annotation.Configuration;
  * @Email xiesen@zork.com.cn
  * @Date 2019/12/6 13:25 星期五
  */
-@Configuration
+//@Configuration
 @Getter
+@Component
 public class AppProperties {
 
     @Value("${check.kafka.servers}")
@@ -23,4 +25,9 @@ public class AppProperties {
 
     @Value("${check.kafka.batchSize}")
     private Integer batchSize;
+
+    @Value("${check.kafka.zkUrl}")
+    private String zookeeperUrl;
+
+
 }
