@@ -34,8 +34,8 @@ public class CheckServiceImpl implements CheckService {
         // 根据 datasetId 先从缓存中拿数据(schema),如果缓存中无数据，请求数据库，将数据放入缓存，然后返回
         RespDto respDto = dataSetService.selectById(datasetId);
         DataSet dataSet = (DataSet) respDto.getData();
-        String jsonSchema = dataSet.getSchemaJson();
-        String topic = dataSet.getName();
+        String jsonSchema = dataSet.getJsonSchema();
+        String topic = dataSet.getDatasetName();
 
         // 如果原始的数据的数据结构和 schema 相同,将数据发送到对应的 topic 中, 这里 topic 就是数据集名称
         RespDto resp = JsonValidateUtil.validate(jsonSchema, msg);

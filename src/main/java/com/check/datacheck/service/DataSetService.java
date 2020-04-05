@@ -3,6 +3,7 @@ package com.check.datacheck.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.check.datacheck.model.DataSet;
 import com.check.datacheck.model.dto.RespDto;
+import com.github.pagehelper.PageInfo;
 
 /**
  * @author 谢森
@@ -46,9 +47,19 @@ public interface DataSetService extends IService<DataSet> {
 
     /**
      * 根据 ID 进行查询
+     *
      * @param id ID
      * @return
      */
     RespDto selectById(Long id);
+
+    /**
+     * 分页查询
+     *
+     * @param pageNum  当前是第几页
+     * @param pageSize 当前页一共几条记录
+     * @return {@link PageInfo}
+     */
+    PageInfo<DataSet> searchByPage(int pageNum, int pageSize);
 
 }

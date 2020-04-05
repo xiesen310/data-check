@@ -24,16 +24,6 @@ public class DataSetMapperTest {
 
     @Test
     public void insert() {
-        DataSet dataSet = new DataSet();
-        dataSet.setName("test2");
-        dataSet.setLifecycle(2);
-        dataSet.setPartitionNum(2);
-        dataSet.setRemark("这是一个测试");
-        dataSet.setType(DatasetTypeEnum.METRIC);
-        dataSet.setProjectId(1201706102832623618L);
-        dataSet.setSchemaJson("{\"name\":\"aaa\",\"age\":12}");
 
-        int rows = dataSetMapper.insert(dataSet);
-        System.out.println("影响记录数: " + rows);
     }
 }

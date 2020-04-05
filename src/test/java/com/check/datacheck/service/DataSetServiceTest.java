@@ -36,17 +36,7 @@ public class DataSetServiceTest {
 
     @Test
     public void createDataSet() {
-        DataSet dataSet = new DataSet();
-        dataSet.setName("test1");
-        dataSet.setLifecycle(2);
-        dataSet.setPartitionNum(2);
-        dataSet.setRemark("这是一个测试");
-        dataSet.setType(DatasetTypeEnum.METRIC);
-        dataSet.setProjectId(1201706102832623618L);
-        dataSet.setSchemaJson("{\"name\":\"aaa\",\"age\":12}");
 
-        RespDto resp = dataSetService.createDataSet(dataSet);
-        System.out.println("data： " + resp.getData() + " ,code： " + resp.getCode() + " ,message: " + resp.getMessage());
     }
 
     @Test

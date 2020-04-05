@@ -1,11 +1,9 @@
 package com.check.datacheck.model;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.check.datacheck.model.enums.DatasetTypeEnum;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 /**
@@ -21,27 +19,20 @@ public class DataSet {
     /**
      * 主键
      */
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
      * 用户名
      */
-    private String name;
+    @NotBlank(message = "数据集名称不能为空")
+    private String datasetName;
 
     /**
-     * 数据集类型
+     * 主题名称
      */
-    private DatasetTypeEnum type;
-
-    /**
-     * 项目 ID
-     */
-    private Long projectId;
-
-    /**
-     * 约束条件
-     */
-    private String schemaJson;
+    @NotBlank(message = "主题名称不能为空")
+    private String topic;
 
     /**
      * 分区数
@@ -49,9 +40,15 @@ public class DataSet {
     private Integer partitionNum;
 
     /**
-     * 生命周期
+     * 副本数
      */
-    private Integer lifecycle;
+    private Integer replicationNum;
+
+    /**
+     * json 约束
+     */
+    @NotBlank(message = "约束条件不能为空")
+    private String jsonSchema;
 
     /**
      * 创建时间

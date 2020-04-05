@@ -4,19 +4,18 @@
 <mapper namespace="com.check.datacheck.dao.DataSetMapper">
     <sql id="commonSql">
 		id,
-        name,
-        type,
-        project_id,
-        schema_json,
+        dataset_name,
+        topic,
         partition_num,
-        lifecycle,
+        replication_num,
+        json_schema,
         create_time,
         update_time,
         remark
     </sql>
 
     <select id="selectByName" resultType="com.check.datacheck.model.DataSet">
-        select <include refid="commonSql"></include> from dataset where name = #{name}
+        select <include refid="commonSql"></include> from dataset where dataset_name = #{name}
     </select>
 
 

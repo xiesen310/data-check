@@ -3,11 +3,14 @@ package com.check.datacheck.controller;
 import com.check.datacheck.model.DataSet;
 import com.check.datacheck.model.dto.RespDto;
 import com.check.datacheck.service.DataSetService;
+import com.check.datacheck.utils.RespHelper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 /**
  * @author 谢森
@@ -28,22 +31,23 @@ public class DataSetController {
             consumes = "application/json, application/xml",
             response = RespDto.class
     )
-    @RequestMapping(value = "/dataset/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/dataset/add", method = RequestMethod.POST)
     @ResponseBody
-    public RespDto createProject(@ApiParam(value = "数据集对象", required = true) @RequestBody DataSet dataSet) {
+    public RespDto add(@ApiParam(value = "数据集对象", required = true) @Valid @RequestBody DataSet dataSet) {
         return dataSetService.createDataSet(dataSet);
     }
 
     @ApiOperation(
-            value = "查询数据集",
+            value = "分页查询数据集",
             produces = "application/json, application/xml",
             consumes = "application/json, application/xml",
             response = RespDto.class
     )
-    @RequestMapping(value = "/dataset/search", method = RequestMethod.GET)
+    @RequestMapping(value = "/dataset", method = RequestMethod.GET)
     @ResponseBody
-    public RespDto search(@ApiParam(value = "数据集名称", required = false) String name) {
-        return dataSetService.selectByName(name);
+    public RespDto search(@ApiParam(value = "起始页", required = true) int pageNum,
+                          @ApiParam(value = "一页显示多少数据", required = true) int pageSize) {
+        return RespHelper.ok(dataSetService.searchByPage(pageNum, pageSize));
     }
 
     @ApiOperation(
