@@ -7,6 +7,9 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 /**
@@ -28,6 +31,7 @@ public class User extends Model<User> {
     /**
      * 用户名
      */
+    @NotBlank(message = "用户名不能为空")
     private String username;
 
     /**
@@ -38,6 +42,8 @@ public class User extends Model<User> {
     /**
      * 年龄
      */
+    @Min(value = 1,message = "年龄不能小于1岁")
+    @Max(value = 120,message = "年龄不能大于120岁")
     private Integer age;
 
     /**

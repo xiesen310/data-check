@@ -4,15 +4,13 @@ import com.check.datacheck.model.User;
 import com.check.datacheck.model.dto.RespDto;
 import com.check.datacheck.service.UserService;
 import com.check.datacheck.utils.RespHelper;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.validation.Valid;
 
 /**
  * @author 谢森
@@ -49,21 +47,46 @@ public class UserController {
     )
     @RequestMapping(value = "/user/add", method = RequestMethod.POST)
     @ResponseBody
-    public RespDto addUser(@ApiParam(value = "用户对象", required = true) @RequestBody User user) {
+    public RespDto addUser(@ApiParam(value = "用户对象", required = true) @Valid @RequestBody User user) {
         System.out.println(user);
         return userService.save(user) ? RespHelper.ok(user, "添加用户成功") : RespHelper.fail(1, "添加用户失败");
     }
 
+    @ApiOperation(
+            value = "用户列表",
+            produces = "application/json, application/xml",
+            consumes = "application/json, application/xml",
+            response = RespDto.class
+    )
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     @ResponseBody
-    public RespDto pageInfo(int pageNum, int pageSize) {
+    public RespDto pageInfo(@ApiParam(value = "起始页", required = true) int pageNum,
+                            @ApiParam(value = "一页显示多少数据", required = true)int pageSize) {
         return RespHelper.ok(userService.searchByPage(pageNum, pageSize));
     }
 
+    @ApiOperation(
+            value = "根据 ID  查询",
+            produces = "application/json, application/xml",
+            consumes = "application/json, application/xml",
+            response = RespDto.class
+    )
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public RespDto selectOne(@PathVariable Long id) {
+    public RespDto selectOne(@ApiParam(value = "ID", required = true)  @PathVariable Long id) {
         return RespHelper.ok(userService.getById(id));
+    }
+
+    @ApiOperation(
+            value = "根据 ID  删除",
+            produces = "application/json, application/xml",
+            consumes = "application/json, application/xml",
+            response = RespDto.class
+    )
+    @RequestMapping(value = "/user/delete/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public RespDto delete(@ApiParam(value = "ID", required = true) @PathVariable Long id) {
+        return userService.removeById(id) ? RespHelper.ok(id, "删除成功") : RespHelper.fail(1, "删除失败");
     }
 
     @ApiOperation(
