@@ -12,6 +12,7 @@ import com.check.datacheck.utils.JsonValidateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * @author 谢森
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @Email xiesen@zork.com.cn
  * @Date 2019/12/6 11:10 星期五
  */
+@Service
 public class CheckServiceImpl implements CheckService {
     private static final Logger logger = LoggerFactory.getLogger(CheckServiceImpl.class);
     @Autowired

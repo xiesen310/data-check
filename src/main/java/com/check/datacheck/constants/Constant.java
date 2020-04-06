@@ -11,4 +11,5 @@ public interface Constant {
     Integer JSON_VALIDATE_FAIL = 10300;
     String SUCCESS_STATUS_STR = "success";
     String FAIL_STATUS_STR = "fail";
+    String CHECK_PREFIX = "check_";
 }

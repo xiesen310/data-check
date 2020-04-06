@@ -1,14 +1,16 @@
 package com.check.datacheck.kafka;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.check.datacheck.init.AppProperties;
 import com.check.datacheck.utils.ConfigUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Properties;
 
@@ -19,11 +21,12 @@ import java.util.Properties;
  * @Email xiesen@zork.com.cn
  * @Date 2019/12/6 11:33 星期五
  */
-public class Producer {
-    private static final Logger logger = LoggerFactory.getLogger(Producer.class);
+@Slf4j
+@Component
+public class CustomProducer {
     static String servers = "kafka-data1:9092,kafka-data2:9092,kafka-data2:9092";
     static int batchSize = 1;
-    static Producer producer;
+    static CustomProducer producer;
     private static KafkaProducer<String, String> kafkaProducer;
     static String topic;
     static String errorTopic;
@@ -31,8 +34,7 @@ public class Producer {
     @Autowired
     AppProperties appProperties;
 
-
-    public Producer() {
+    public CustomProducer() {
         initConfig();
         Properties props = new Properties();
         props.put("bootstrap.servers", servers);
@@ -44,16 +46,20 @@ public class Producer {
 
     /**
      * 初始化 kafka 集群配置
+     * todo 在 构造方法中没有办法去加载 spring 注入的参数
      */
     public void initConfig() {
+//        servers = "s103:9092";
+//        errorTopic = "error";
+//         batchSize = 1;
         servers = ConfigUtils.getString(appProperties.getKafkaServers(), "localhost:9092");
         errorTopic = ConfigUtils.getString(appProperties.getErrorTopic(), "error");
         batchSize = ConfigUtils.getInteger(appProperties.getBatchSize(), 1000);
     }
 
-    public static synchronized Producer getInstance() {
+    public static synchronized CustomProducer getInstance() {
         if (producer == null) {
-            producer = new Producer();
+            producer = new CustomProducer();
         }
         return producer;
     }
@@ -68,7 +74,7 @@ public class Producer {
         try {
             sendMsg(errorTopic, logJson);
         } catch (Exception e) {
-            logger.error("sendErrorLog - 插入 kafka 失败", e);
+            log.error("sendErrorLog - 插入 kafka 失败", e);
         }
     }
 
@@ -82,7 +88,7 @@ public class Producer {
         try {
             kafkaProducer.send(new ProducerRecord<String, String>(topic, null, msg));
         } catch (Exception e) {
-            logger.error("sendMsg - 插入 kafka 失败", e);
+            log.error("sendMsg - 插入 kafka 失败", e);
         }
     }
 

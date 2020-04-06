@@ -11,7 +11,7 @@ import java.io.IOException;
  * @Date 2019/12/6 14:33 星期五
  */
 public class ProducerPool implements Closeable {
-    private Producer[] pool;
+    private CustomProducer[] pool;
 
     private int threadNum = 15;
     /**
@@ -33,13 +33,13 @@ public class ProducerPool implements Closeable {
     }
 
     public void init() {
-        pool = new Producer[threadNum];
+        pool = new CustomProducer[threadNum];
         for (int i = 0; i < threadNum; i++) {
-            pool[i] = new Producer();
+            pool[i] = new CustomProducer();
         }
     }
 
-    public Producer getProducer() {
+    public CustomProducer getProducer() {
         Integer size = 65535;
         if (index > size) {
             index = 0;

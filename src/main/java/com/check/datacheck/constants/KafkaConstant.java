@@ -1,5 +1,8 @@
 package com.check.datacheck.constants;
 
+import com.check.datacheck.init.AppProperties;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.HashMap;
 import java.util.Map;
 

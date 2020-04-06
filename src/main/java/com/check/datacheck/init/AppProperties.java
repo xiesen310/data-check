@@ -3,6 +3,7 @@ package com.check.datacheck.init;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Component;
  * @Email xiesen@zork.com.cn
  * @Date 2019/12/6 13:25 星期五
  */
-//@Configuration
 @Getter
 @Component
 public class AppProperties {
