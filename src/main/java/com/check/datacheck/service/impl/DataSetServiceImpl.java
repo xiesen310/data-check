@@ -48,11 +48,25 @@ public class DataSetServiceImpl extends ServiceImpl<DataSetMapper, DataSet> impl
 
     @Override
     public RespDto deleteById(Long id) {
-        int rows = dataSetMapper.deleteById(id);
-        if (rows >= 1) {
-            return RespHelper.ok(rows, "删除 id 为 " + id + " 数据集成功");
+        DataSet dataSet = dataSetMapper.selectById(id);
+        if (null != dataSet) {
+            String topic = dataSet.getTopic();
+            String result = kafkaManagerUtil.deleteTopic(topic);
+            if ("success".equals(result)) {
+                int rows = dataSetMapper.deleteById(id);
+                if (rows >= 1) {
+                    return RespHelper.ok(rows, "删除 id 为 " + id + " 数据集成功");
+                } else {
+                    return RespHelper.fail(DataSetConstant.DATASET_DELETE_FAIL, "数据集删除失败");
+                }
+            } else {
+                log.error("删除 [" + topic + "] 主题失败");
+                return RespHelper.fail(1, "删除 [" + topic + "] 主题失败");
+            }
+        } else {
+            log.error("[" + id + "] 数据库不存在");
+            return RespHelper.fail(1, "[" + id + "] 数据库不存在");
         }
-        return RespHelper.fail(DataSetConstant.DATASET_DELETE_FAIL, "数据集删除失败");
     }
 
     @Override

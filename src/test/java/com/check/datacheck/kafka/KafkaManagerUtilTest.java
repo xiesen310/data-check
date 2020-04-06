@@ -68,4 +68,10 @@ public class KafkaManagerUtilTest {
 
     }
 
+    @Test
+    public void deleteTopic() {
+        String aa = kafkaManagerUtil.deleteTopic("aa");
+        System.out.println(aa);
+    }
+
 }

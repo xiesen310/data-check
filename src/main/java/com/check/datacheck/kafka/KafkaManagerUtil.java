@@ -93,13 +93,31 @@ public class KafkaManagerUtil {
      *
      * @param topicName 主题名称
      */
-    public static void deleteTopic(String topicName) {
-        ZkUtils zkUtils = ZkUtils.
-                apply(zkStr, 30000, 30000, JaasUtils.isZkSecurityEnabled());
+    public String deleteTopic(String topicName) {
+        ZkUtils zkUtils = null;
+        try {
+            zkUtils = ZkUtils.
+                    apply(zkStr, 30000, 30000, JaasUtils.isZkSecurityEnabled());
+            boolean b = AdminUtils.topicExists(zkUtils, topicName);
+            if (b) {
+                AdminUtils.deleteTopic(zkUtils, topicName);
+                try {
+                    Thread.sleep(200);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                boolean flag = AdminUtils.topicExists(zkUtils, topicName);
+                return !flag ? "success" : "fail";
+            } else {
+                log.info("[" + topicName + "] 不存在");
+                return "fail";
+            }
 
-        AdminUtils.deleteTopic(zkUtils, topicName);
-
-        zkUtils.close();
+        } finally {
+            if (null != zkUtils) {
+                zkUtils.close();
+            }
+        }
 
     }
 

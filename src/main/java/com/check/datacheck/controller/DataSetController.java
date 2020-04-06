@@ -56,9 +56,9 @@ public class DataSetController {
             consumes = "application/json, application/xml",
             response = RespDto.class
     )
-    @RequestMapping(value = "/dataset/delete", method = RequestMethod.GET)
+    @RequestMapping(value = "/dataset/delete/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public RespDto delete(@ApiParam(value = "数据集 ID", required = true) @RequestParam(value = "id", required = true) Long id) {
+    public RespDto delete(@ApiParam(value = "数据集 ID", required = true) @PathVariable Long id) {
         return dataSetService.deleteById(id);
     }
 
