@@ -38,6 +38,22 @@ public class DataSetController {
     }
 
     @ApiOperation(
+            value = "更新数据集",
+            produces = "application/json, application/xml",
+            consumes = "application/json, application/xml",
+            response = RespDto.class
+    )
+    @RequestMapping(value = "/dataset/update", method = RequestMethod.POST)
+    @ResponseBody
+    public RespDto update(@ApiParam(value = "数据集对象", required = true) @Valid @RequestBody DataSet dataSet) {
+        if (0 == dataSetService.updateDataset(dataSet)) {
+            return RespHelper.ok("更新成功");
+        } else {
+            return RespHelper.fail(1, "更新失败");
+        }
+    }
+
+    @ApiOperation(
             value = "分页查询数据集",
             produces = "application/json, application/xml",
             consumes = "application/json, application/xml",
@@ -60,6 +76,18 @@ public class DataSetController {
     @ResponseBody
     public RespDto delete(@ApiParam(value = "数据集 ID", required = true) @PathVariable Long id) {
         return dataSetService.deleteById(id);
+    }
+
+    @ApiOperation(
+            value = "根据 ID 查询",
+            produces = "application/json, application/xml",
+            consumes = "application/json, application/xml",
+            response = RespDto.class
+    )
+    @RequestMapping(value = "/dataset/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public RespDto findById(@ApiParam(value = "数据集 ID", required = true) @PathVariable Long id) {
+        return dataSetService.selectById(id);
     }
 
     @ApiOperation(

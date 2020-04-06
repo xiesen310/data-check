@@ -54,6 +54,13 @@ public interface DataSetService extends IService<DataSet> {
     RespDto selectById(Long id);
 
     /**
+     * 更新数据集
+     * @param dataSet
+     * @return
+     */
+    int updateDataset(DataSet dataSet);
+
+    /**
      * 分页查询
      *
      * @param pageNum  当前是第几页

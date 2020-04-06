@@ -121,6 +121,42 @@ public class DataSetServiceImpl extends ServiceImpl<DataSetMapper, DataSet> impl
     }
 
     @Override
+    public int updateDataset(DataSet dataSet) {
+        Long id = dataSet.getId();
+        if (null != id) {
+            // 检查 topic 是否有变动，如果有变动，及时跟新 topic 信息，无变动，只需要更新数据库
+            String topic = dataSet.getTopic();
+            Integer partitionNum = dataSet.getPartitionNum();
+            Integer replicationNum = dataSet.getReplicationNum();
+            DataSet dataSetDb = dataSetMapper.selectById(id);
+            String topic1 = dataSetDb.getTopic();
+            if (topic.equals(topic1)) {
+                // 只更新数据库即可，无需更新 kafka 中的 topic
+                dataSetMapper.updateById(dataSet);
+            } else {
+                // 删除数据库中的 topic
+                kafkaManagerUtil.deleteTopic(topic1);
+                // 需要更新 kafka 中的 topic 映射关系
+                String result = kafkaManagerUtil.createKafkaTopic(topic, partitionNum, replicationNum);
+                if ("success".equals(result)) {
+                    // 更新数据库
+                    int rows = dataSetMapper.updateById(dataSet);
+                    if (rows > 0) {
+                        return 0;
+                    } else {
+                        log.error("更新数据库失败");
+                        return 1;
+                    }
+                }
+            }
+        } else {
+            log.error("[" + id + "] 不存在");
+            return 1;
+        }
+        return 0;
+    }
+
+    @Override
     public PageInfo<DataSet> searchByPage(int pageNum, int pageSize) {
         // 1. 通过 pageHelper 的静态方法开始获取分页数据
         // 指定当前时第几页,以及每页显示的记录条数

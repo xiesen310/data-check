@@ -102,7 +102,7 @@ public class KafkaManagerUtil {
             if (b) {
                 AdminUtils.deleteTopic(zkUtils, topicName);
                 try {
-                    Thread.sleep(200);
+                    Thread.sleep(1000);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
