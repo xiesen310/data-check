@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import scala.App;
 
 import java.util.Properties;
 
@@ -49,12 +50,10 @@ public class CustomProducer {
      * todo 在 构造方法中没有办法去加载 spring 注入的参数
      */
     public void initConfig() {
-//        servers = "s103:9092";
-//        errorTopic = "error";
-//         batchSize = 1;
-        servers = ConfigUtils.getString(appProperties.getKafkaServers(), "localhost:9092");
-        errorTopic = ConfigUtils.getString(appProperties.getErrorTopic(), "error");
-        batchSize = ConfigUtils.getInteger(appProperties.getBatchSize(), 1000);
+        servers = ConfigUtils.getString(AppProperties.kafkaServers, "localhost:9092");
+        errorTopic = ConfigUtils.getString(AppProperties.errorTopic, "error");
+        System.out.println("kafka batch size: " + AppProperties.batchSize);
+        batchSize = 1;
     }
 
     public static synchronized CustomProducer getInstance() {

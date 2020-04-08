@@ -36,11 +36,6 @@ spring:
       max-pool-prepared-statement-per-connection-size: 20
       # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
       #filters: stat,wall,slf4j
-  # redis 配置
-  redis:
-    host: s104
-    port: 6379
-    password:
 
 
 ######################
@@ -77,10 +72,12 @@ pagehelper:
 ######################
 # kafka 配置
 ######################
-check:
-  kafka:
-    error-topic: error
-    servers: "s103:9092"
-    batchSize: 1
-    zkUrl: s103:2181/kafka111
+check.kafka.error-topic: error
+check.kafka.servers: "s103:9092"
+check.kafka.batch-size: "1"
+check.kafka.zkUrl: s103:2181/kafka111
 
+  # redis 配置
+spring.redis.host: s104
+spring.redis.port: 6379
+spring.redis.password:

@@ -22,9 +22,6 @@ public class AppPropertiesTest {
 
     @Test
     public void test() {
-        System.out.println(appProperties.getBatchSize());
-        System.out.println(appProperties.getKafkaServers());
-        System.out.println(appProperties.getErrorTopic());
     }
 
 }

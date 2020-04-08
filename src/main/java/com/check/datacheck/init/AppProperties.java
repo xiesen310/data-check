@@ -16,18 +16,27 @@ import org.springframework.stereotype.Component;
 @Getter
 @Component
 public class AppProperties {
+    public static String kafkaServers;
 
-    @Value("${check.kafka.servers}")
-    private String kafkaServers;
+    public static String errorTopic;
 
-    @Value("${check.kafka.error-topic}")
-    private String errorTopic;
-
-    @Value("${check.kafka.batchSize}")
-    private Integer batchSize;
+    public static String batchSize;
 
     @Value("${check.kafka.zkUrl}")
     private String zookeeperUrl;
 
+    @Value("${check.kafka.servers:localhost:9092}")
+    public void setKafkaServers(String kafkaServers) {
+        this.kafkaServers = kafkaServers;
+    }
 
+    @Value("${check.kafka.error-topic:error}")
+    public void setErrorTopic(String errorTopic) {
+        this.errorTopic = errorTopic;
+    }
+
+    @Value("${check.kafka.batch-size}")
+    public static void setBatchSize(String batchSize) {
+        AppProperties.batchSize = batchSize;
+    }
 }
